@@ -1,24 +1,21 @@
-const express = require("express")
-const mongoose = require('mongoose')
-const cors = require("cors")
-const UserModel = require('./models/Users')
+require('dotenv').config();
+const express = require('express');
+const app = express();
+const cors = require("cors");
+const connection = require("./db");
+const userRoutes = require('./routes/users');
+const authRoutes = require('./routes/auth');
 
-const app = express()
+//database connection
+connection();
 
-app.use(express.json())
-app.use(cors())
+//middleware
+app.use(express.json());
+app.use(cors());
 
-const CONNECTION_URL = 'mongodb+srv://vaibhavpro9210:g25PrcS9W3VinRs1@online-judge.uyuimlo.mongodb.net/?retryWrites=true&w=majority&appName=online-judge'
+//routes
+app.use("/api/users",userRoutes);
+app.use("/api/auth",authRoutes);
 
-const PORT = process.env.PORT || 8080;
-
-mongoose.connect(CONNECTION_URL, {useUnifiedTopology: true})
-.then(()=> app.listen(PORT,()=>console.log(`Connected to MongoDB Atlas, server running on PORT: ${PORT}`)))
-.catch((error) => {
-    console.error('Error connecting to MongoDB Atlas:', error);
-});
-
-app.post('/register',(req,res)=>{
-    UserModel.create(req.body).then(users => res.json(users))
-    .catch(err => res.json(err))
-})
+const port = process.env.PORT || 8080;
+app.listen(port, () => console.log(`Listening on port ${port}...`))
