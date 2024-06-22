@@ -1,0 +1,67 @@
+.admin_container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .admin_container h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+  
+  .admin_container form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .admin_container form input,
+  .admin_container form textarea {
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .admin_container form button {
+    padding: 10px 20px;
+    background-color: #3bb19b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  
+  .admin_container ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .admin_container ul li {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .admin_container ul li h2 {
+    font-size: 20px;
+    margin-bottom: 5px;
+  }
+  
+  .admin_container ul li button {
+    padding: 5px 10px;
+    background-color: #f34646;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 10px;
+  }
+  
