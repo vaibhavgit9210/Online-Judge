@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './styles.module.css';
 
 const ProblemDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [problem, setProblem] = useState(null);
   const [code, setCode] = useState('');
   const [language, setLanguage] = useState('cpp');
   const [output, setOutput] = useState('');
-  const [customInput, setCustomInput] = useState('');
-  const [isCustom, setIsCustom] = useState(false);
   const [consoleInput, setConsoleInput] = useState('');
 
   useEffect(() => {
@@ -39,7 +38,7 @@ const ProblemDetail = () => {
       const response = await axios.post('http://localhost:8080/api/run', {
         code,
         language,
-        input: isCustom ? customInput : consoleInput.trim() // Pass the correct input
+        input: consoleInput.trim() // Pass the correct input
       });
       setOutput(response.data.output);
     } catch (error) {
@@ -54,10 +53,19 @@ const ProblemDetail = () => {
         language,
         problemId: id,
       });
-      setOutput(response.data.result);
+      setOutput(response.data.success ? response.data.message : `Failed at ${response.data.message}`);
     } catch (error) {
       setOutput(`Error: ${error.response ? error.response.data.error : error.message}`);
     }
+  };
+
+  const handleBack = () => {
+    navigate(-1);
+  };
+
+  const handleLogout = () => {
+    // Perform any logout operations like clearing tokens or session
+    navigate('/login'); // Redirect to login page after logout
   };
 
   if (!problem) {
@@ -66,6 +74,10 @@ const ProblemDetail = () => {
 
   return (
     <div className={styles.problem_detail_container}>
+      <div className={styles.header_buttons}>
+        <button onClick={handleBack}>Back</button>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
       <h1>{problem.title}</h1>
       <p>{problem.description}</p>
 
@@ -79,10 +91,6 @@ const ProblemDetail = () => {
           </select>
           <button onClick={handleRunCode}>Run</button>
           <button onClick={handleSubmitCode}>Submit</button>
-          <label>
-            <input type="checkbox" checked={isCustom} onChange={() => setIsCustom(!isCustom)} />
-            Custom Test Case
-          </label>
         </div>
 
         <textarea
@@ -98,16 +106,6 @@ const ProblemDetail = () => {
               placeholder="Console Input"
               value={consoleInput}
               onChange={(e) => setConsoleInput(e.target.value)}
-            />
-          </div>
-        )}
-
-        {isCustom && (
-          <div className={styles.custom_test_case}>
-            <textarea
-              placeholder="Custom Input"
-              value={customInput}
-              onChange={(e) => setCustomInput(e.target.value)}
             />
           </div>
         )}
